@@ -7,7 +7,6 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.ResponseStatusException;
-
 import bank.yanki.wallet.dto.DebitCardDTO;
 import bank.yanki.wallet.dto.MainAccountBalanceDTO;
 import bank.yanki.wallet.event.WalletEvent;
@@ -16,8 +15,10 @@ import bank.yanki.wallet.producer.WalletEventProducer;
 import bank.yanki.wallet.repository.WalletRepository;
 import bank.yanki.wallet.service.WalletService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class WalletServiceImpl implements WalletService{
@@ -166,5 +167,23 @@ public class WalletServiceImpl implements WalletService{
 	            });
 	}
 
+	@Override
+	public Mono<Wallet> getWalletByPhoneNumber(String phoneNumber) {
+		return walletRepository.findByPhoneNumber(phoneNumber);
+	}
+
+	public Mono<Wallet> updateWalletByPhoneNumber(String phoneNumber, Wallet updatedWallet) {
+		log.info("phoneNumber[" + phoneNumber);
+		log.info("updatedWallet[" + updatedWallet.getPhoneNumber()+updatedWallet.getBalance());
+	    return walletRepository.findByPhoneNumber(phoneNumber)
+	            .flatMap(existingWallet -> {
+	                existingWallet.setBalance(updatedWallet.getBalance());
+	                existingWallet.setEmail(updatedWallet.getEmail());
+	                existingWallet.setImei(updatedWallet.getImei());
+	                existingWallet.setLinkedDebitCardNumber(updatedWallet.getLinkedDebitCardNumber());
+	                log.info("existingWallet[" + existingWallet.getPhoneNumber()+existingWallet.getBalance());
+	                return walletRepository.save(existingWallet);
+	            });
+	}
 
 }
