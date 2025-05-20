@@ -1,8 +1,6 @@
 package bank.yanki.wallet.service;
 
 import java.math.BigDecimal;
-
-import bank.yanki.wallet.dto.WalletRequestDTO;
 import bank.yanki.wallet.model.Wallet;
 import reactor.core.publisher.Mono;
 
@@ -13,4 +11,6 @@ public interface WalletService {
 	Mono<Wallet> loadFromDebitCard(String phoneNumber, BigDecimal amount);
 	Mono<Wallet> linkDebitCard(String phoneNumber, String cardNumber);
 	Mono<Wallet> loadFromCard(String phoneNumber, BigDecimal amount);
+	Mono<Wallet> getWalletByPhoneNumber(String phoneNumber);
+	Mono<Wallet> updateWalletByPhoneNumber(String phoneNumber,Wallet wallet);
 }
