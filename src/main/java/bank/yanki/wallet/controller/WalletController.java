@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,6 +28,7 @@ import reactor.core.publisher.Mono;
 public class WalletController {
 	private final WalletService walletService;
 	private final WalletRepository walletRepository;
+	
 	@PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Mono<Wallet> createWallet(@RequestBody Wallet wallet) {
@@ -80,4 +82,15 @@ public class WalletController {
 	public Flux<Wallet> getAllWallets() {
 	    return walletRepository.findAll();
 	}
+	
+	@GetMapping("/{phoneNumber}")
+	public Mono<Wallet> getWalletByPhoneNumber(@PathVariable String phoneNumber) {
+	    return walletService.getWalletByPhoneNumber(phoneNumber);
+	}
+	
+	@PutMapping("/{phoneNumber}")
+	public Mono<Wallet> updateWalletByPhoneNumber(@PathVariable String phoneNumber, @RequestBody Wallet wallet) {
+	    return walletService.updateWalletByPhoneNumber(phoneNumber, wallet);
+	}
+	
 }
