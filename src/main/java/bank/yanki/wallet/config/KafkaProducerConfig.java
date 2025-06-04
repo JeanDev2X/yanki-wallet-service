@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import bank.yanki.wallet.event.WalletEvent;
+import bank.yanki.wallet.dto.PaymentValidationResponseDTO;
 
 @Configuration
 public class KafkaProducerConfig {
@@ -31,6 +32,20 @@ public class KafkaProducerConfig {
     @Bean
     public KafkaTemplate<String, WalletEvent> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
+    }
+    
+    @Bean
+    public ProducerFactory<String, PaymentValidationResponseDTO> paymentValidationResponseProducerFactory() {
+        Map<String, Object> configProps = new HashMap<>();
+        configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers); // o tu broker Kafka
+        configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+        configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
+        return new DefaultKafkaProducerFactory<>(configProps);
+    }
+
+    @Bean
+    public KafkaTemplate<String, PaymentValidationResponseDTO> paymentValidationResponseKafkaTemplate() {
+        return new KafkaTemplate<>(paymentValidationResponseProducerFactory());
     }
     
 }
