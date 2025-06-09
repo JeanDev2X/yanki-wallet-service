@@ -4,8 +4,8 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
-import bank.yanki.wallet.dto.PaymentValidationRequestDTO;
-import bank.yanki.wallet.dto.PaymentValidationResponseDTO;
+import com.bootcoin.dto.PaymentValidationRequestDTO;
+import com.bootcoin.dto.PaymentValidationResponseDTO;
 import bank.yanki.wallet.repository.WalletRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -51,5 +51,7 @@ public class PaymentValidationListener {
             })
             .subscribe();
     }
+    
+    
     
 }

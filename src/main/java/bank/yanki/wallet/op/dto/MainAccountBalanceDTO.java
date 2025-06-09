@@ -1,4 +1,4 @@
-package bank.yanki.wallet.dto;
+package bank.yanki.wallet.op.dto;
 
 import java.math.BigDecimal;
 
